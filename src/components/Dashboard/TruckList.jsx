@@ -5,35 +5,40 @@ import AddTruckForm from './TruckForm';
 
 const TruckList = () => {
     const [trucks, setTrucks] = useState([]);
+    const [dataLoaded, setDataLoaded] = useState(false);
+
   
     useEffect(() => {
       const fetchTrucks = async () => {
-        // Access the "trucks" collection in Firestore
         const trucksCollection = collection(firestore, 'trucks');
-  
-        // Fetch documents from the "trucks" collection
         const trucksSnapshot = await getDocs(trucksCollection);
-  
-        // Extract data from documents and update state
         const truckData = trucksSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-  
         setTrucks(truckData);
       };
-  
-      fetchTrucks();
-    }, []);
 
-    const handleAddTruck = async (newTruck) => {
-      // Update the state with the new truck
-      setTrucks((prevTrucks) => [...prevTrucks, newTruck]);
+          // Fetch trucks only if data hasn't been loaded yet
+    
+      fetchTrucks();
+  }, [trucks]);
   
-      // Add the new truck to the Firestore collection
-      const trucksCollection = collection(firestore, 'trucks');
-      await addDoc(trucksCollection, newTruck);
+    const handleAddTruck = async (newTruck) => {
+      // Check if the truck is already in the list
+      if (!trucks.some((truck) => truck.number === newTruck.number)) {
+        // Add the new truck to the Firestore collection
+        const trucksCollection = collection(firestore, 'trucks');
+        await addDoc(trucksCollection, newTruck);
+  
+        // Update the state with the new truck
+        setTrucks((prevTrucks) => [...prevTrucks, newTruck]);
+      } else {
+        // Truck with the same number already exists
+        console.log('Truck with this number already exists.');
+      }
     };
+  
 
     const handleRemoveTruck = async (truckId) => {
       setTrucks((prevTrucks) => prevTrucks.filter((truck) => truck.id !== truckId));

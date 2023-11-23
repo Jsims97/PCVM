@@ -22,8 +22,7 @@ const AddTruckForm = ({ onAddTruck }) => {
       setTruckNumber('');
       setIsOperational(true);
   
-      // Trigger callback to update TruckList component
-      onAddTruck(newTruck);
+
     };
   
     return (
