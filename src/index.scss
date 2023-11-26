@@ -1,0 +1,74 @@
+$primary-color: #004080;    // Deep Blue
+$secondary-color: #333333;  // Dark Gray
+$accent-color: #ff9900;     // Orange
+
+body{
+    background-image: url('./imgs/AdobeStock_254145483.jpeg'); // Set the path to your image file
+    background-size: cover;  // Cover the entire viewport
+    background-position: center;  // Center the background image
+    background-repeat: no-repeat;  // Do not repeat the background image
+    margin: 0;  // Remove default body margin
+    height: 100vh;  // Ensure the background covers the full viewport height
+}
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center; // Center items horizontally
+  justify-content: center; // Center items vertically
+}
+
+.sign-in-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    flex-direction: column;
+}
+.sign-in-header{
+    background-color: $primary-color;
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    border-radius: 0.25rem;
+    color: white;
+}
+.sign-in-card{
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+    border: 1px solid $primary-color;
+}
+.btn-primary {
+    margin-top: 8px;
+    background-color: $accent-color;
+    border-color: $accent-color;
+  }
+ 
+.add-truck-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 20px;
+}
+.add-truck-button{
+  background-color: $primary-color; // Set the button background color to blue
+    color: white; // Set the text color to white for better contrast
+    border: none; // Remove default border
+    border-radius: 8px; // Add rounded border
+    padding: 10px 20px; // Add padding for better appearance
+    cursor: pointer; // Add pointer cursor for interaction
+
+    &:hover {
+      background-color: $secondary-color; // Change color on hover
+    }
+}
+input[type="number"] {
+  border: 1px solid #ccc; // Example border color
+  border-radius: 8px; // Add rounded border
+  padding: 8px; // Add padding for better appearance
+
+  &:focus {
+    outline: none; // Remove default focus outline
+    border-color: blue; // Change border color on focus
+  }
+}

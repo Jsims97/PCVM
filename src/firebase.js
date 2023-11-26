@@ -14,6 +14,12 @@ const firebaseConfig = {
   measurementId: "G-YW1VJP9CH0"
 };
 
+
+if (window.location.hostname === 'localhost') {
+  firebaseConfig.firestoreHost = 'localhost:8080';
+  firebaseConfig.authEmulatorHost = 'http://localhost:9099';
+}
+
 const app = initializeApp(firebaseConfig);
 
 
