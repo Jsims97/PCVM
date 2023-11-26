@@ -5,16 +5,18 @@ import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import AuthDetails from './components/AuthDetails';
 import TruckList from './components/Dashboard/TruckList';
+import TruckDetails from './components/TruckInfo/TruckDetails';
 
 const App = () => {
   return (
     <Router>
       <div className="App">
         <Routes>
-          <Route path="src\components\auth\SignIn.jsx" component={SignIn} />
-          <Route path="src\components\auth\SignUp.jsx" component={SignUp} />
-          <Route path="src\components\AuthDetails.jsx" component={AuthDetails} />
-          <Route path="src\components\Dashboard\TruckList.jsx" component={TruckList} />
+          <Route path="src/components/auth/SignIn" component={SignIn} />
+          <Route path="src/components/auth/SignUp" component={SignUp} />
+          <Route path="src/components/AuthDetails" component={AuthDetails} />
+          <Route path="/dashboard/trucklist" element={<TruckList />} />
+          <Route path="/truck/:id" element={<TruckDetails />} />
           <Route path="/" element={<SignIn />} />
         </Routes>
       </div>

@@ -3,6 +3,7 @@ import { Card, Table, Button } from 'react-bootstrap';
 import { auth, firestore } from '../../firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import AddTruckForm from './TruckForm';
+import { Link } from 'react-router-dom';
 
 
 const TruckList = () => {
@@ -84,6 +85,11 @@ const TruckList = () => {
                   <Button variant="danger" onClick={() => handleRemoveTruck(truck.id)}>
                     Remove
                   </Button>
+                </td>
+                <td>
+                  <Link to={`/truck/${truck.id}`}>
+                    <Button variant="info">View Details</Button>
+                  </Link>
                 </td>
               </tr>
             ))}
