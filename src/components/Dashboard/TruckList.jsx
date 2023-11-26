@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Table, Button } from 'react-bootstrap';
+import { Card, Table, Button, Row, Col } from 'react-bootstrap';
 import { auth, firestore } from '../../firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import AddTruckForm from './TruckForm';
 import { Link } from 'react-router-dom';
-
 
 const TruckList = () => {
   const [trucks, setTrucks] = useState([]);
@@ -53,51 +52,65 @@ const TruckList = () => {
   };
 
   return (
-    <Card>
-      <Card.Header>
-        <Card.Title>Truck List</Card.Title>
-      </Card.Header>
-      <Card.Body>
-        <Table striped bordered hover responsive>
-          <thead>
-            <tr>
-              <th>Truck Number</th>
-              <th>Operational Status</th>
-              <th>Toggle Operational</th>
-              <th>Remove</th>
-            </tr>
-          </thead>
-          <tbody>
-            {trucks.map((truck) => (
-              <tr key={truck.id}>
-                <td>{truck.number}</td>
-                <td className={truck.isOperational ? 'operational-status-yes' : 'operational-status-no'}>
-                  {truck.isOperational ? 'Yes' : 'No'}</td>
-                <td>
-                  <Button
-                    variant="primary"
-                    onClick={() => handleToggleOperational(truck.id, !truck.isOperational)}
-                  >
-                    Toggle Operational
-                  </Button>
-                </td>
-                <td>
-                  <Button variant="danger" onClick={() => handleRemoveTruck(truck.id)}>
-                    Remove
-                  </Button>
-                </td>
-                <td>
-                  <Link to={`/truck/${truck.id}`}>
-                    <Button variant="info">View Details</Button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-        <AddTruckForm onAddTruck={handleAddTruck} />
-      </Card.Body>
-    </Card>
+    <Row className="justify-content-center mt-4">
+      <Col md={8}>
+        <Card>
+          <Card.Header>
+            <Card.Title>Truck List</Card.Title>
+          </Card.Header>
+          <Card.Body>
+            <div style={{ overflowX: 'auto' }}>
+              <Table striped bordered hover responsive>
+                <colgroup>
+                  <col style={{ width: '20%' }} />
+                  <col style={{ width: '20%' }} />
+                  <col style={{ width: '20%' }} />
+                  <col style={{ width: '20%' }} />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>Truck Number</th>
+                    <th>Operational Status</th>
+                    <th>Toggle Operational</th>
+                    <th>Remove</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {trucks.map((truck) => (
+                    <tr key={truck.id}>
+                      <td>
+                        <Link to={`/truck/${truck.id}`}>
+                          {truck.number}
+                        </Link>
+                      </td>
+                      <td className={truck.isOperational ? 'operational-status-yes' : 'operational-status-no'}>
+                        {truck.isOperational ? 'Yes' : 'No'}
+                      </td>
+                      <td>
+                        <Button
+                          variant="primary"
+                          onClick={() => handleToggleOperational(truck.id, !truck.isOperational)}
+                        >
+                          Operational
+                        </Button>
+                      </td>
+                      <td>
+                        <Button variant="danger" onClick={() => handleRemoveTruck(truck.id)}>
+                          Remove
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+          </Card.Body>
+          <Card.Footer>
+            <AddTruckForm onAddTruck={handleAddTruck} />
+          </Card.Footer>
+        </Card>
+      </Col>
+    </Row>
   );
 };
 

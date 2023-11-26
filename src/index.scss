@@ -43,6 +43,13 @@ body{
     background-color: $accent-color;
     border-color: $accent-color;
   }
+  
+.truck-list{
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin: 20px;
+}
  
 .add-truck-form {
     display: flex;
@@ -71,4 +78,7 @@ input[type="number"] {
     outline: none; // Remove default focus outline
     border-color: blue; // Change border color on focus
   }
+}
+.truck-list-table{
+  width: 100px;
 }

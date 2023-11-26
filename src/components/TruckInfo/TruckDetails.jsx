@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Card, Table, Button } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
-import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { firestore } from '../../firebase';
-import { Card, ListGroup, Button } from 'react-bootstrap';
-import AddDataForm from './AddDataForm';
-import DriverDetails from './DriverDetails';
-import MaintenanceDetails from './MaintenanceDetails';
 
 const TruckDetails = () => {
   const { id } = useParams();
   const [truck, setTruck] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [drivers, setDrivers] = useState([]);
-  const [maintenance, setMaintenance] = useState([]);
 
   useEffect(() => {
     const fetchTruckDetails = async () => {
@@ -23,74 +17,76 @@ const TruckDetails = () => {
         if (truckDocSnapshot.exists()) {
           const truckData = { id: truckDocSnapshot.id, ...truckDocSnapshot.data() };
           setTruck(truckData);
-
-          // Fetch drivers for the truck
-          const driversCollection = collection(firestore, 'drivers');
-          const driversQuery = query(driversCollection, where('truckId', '==', id));
-          const driversSnapshot = await getDocs(driversQuery);
-          const driverData = driversSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-          setDrivers(driverData);
-
-          // Fetch scheduled maintenance for the truck
-          const maintenanceCollection = collection(firestore, 'maintenance');
-          const maintenanceQuery = query(maintenanceCollection, where('truckId', '==', id));
-          const maintenanceSnapshot = await getDocs(maintenanceQuery);
-          const maintenanceData = maintenanceSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-          setMaintenance(maintenanceData);
         } else {
           console.error('Truck not found.');
         }
       } catch (error) {
         console.error('Error fetching truck details:', error);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchTruckDetails();
   }, [id]);
 
-  const handleDataAdded = () => {
-    // You might want to refresh the truck details after adding data
-    // You can add logic here to refetch the truck details or update the local state
-    console.log('Data added!');
-  };
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
   if (!truck) {
-    return <p>Truck not found.</p>;
+    return <p>Loading...</p>;
   }
 
   return (
     <div>
-      <Link to="/Dashboard/truckList">
-        <Button> Back</Button>
+      <Link to="/Dashboard/TruckList">
+        <Button variant="primary">Back to Truck List</Button>
       </Link>
+
       <Card>
         <Card.Header>
           <Card.Title>Truck Details</Card.Title>
         </Card.Header>
-        <ListGroup variant="flush">
-          <ListGroup.Item>
-            <strong>Truck Number:</strong> {truck.number}
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <strong>Operational Status:</strong> {truck.isOperational ? 'Yes' : 'No'}
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <strong>Driver:</strong> {drivers.name}
-          </ListGroup.Item>
-          {maintenance.map((item) => (
-            <ListGroup.Item key={item.id}>
-              <strong>Scheduled Maintenance:</strong> {item.description} - {item.date}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
         <Card.Body>
-          <AddDataForm truckId={id} onDataAdded={handleDataAdded} />
+          <Table striped bordered hover responsive>
+            <tbody>
+              <tr>
+                <td>Truck Number:</td>
+                <td>{truck.number}</td>
+              </tr>
+              <tr>
+                <td>Operational Status:</td>
+                <td>{truck.isOperational ? 'Yes' : 'No'}</td>
+              </tr>
+              <tr>
+                <td>Fuel Type:</td>
+                <td>{truck.fuelType || 'N/A'}</td>
+              </tr>
+              <tr>
+                <td>Make and Model:</td>
+                <td>{truck.makeAndModel || 'N/A'}</td>
+              </tr>
+              <tr>
+                <td>VIN Number:</td>
+                <td>{truck.vinNumber || 'N/A'}</td>
+              </tr>
+              <tr>
+                <td>Tag:</td>
+                <td>{truck.tag || 'N/A'}</td>
+              </tr>
+              <tr>
+                <td>Location:</td>
+                <td>{truck.location || 'N/A'}</td>
+              </tr>
+              <tr>
+                <td>Description:</td>
+                <td>{truck.description || 'N/A'}</td>
+              </tr>
+              <tr>
+                <td>Year:</td>
+                <td>{truck.year || 'N/A'}</td>
+              </tr>
+              <tr>
+                <td>Date Acquired:</td>
+                <td>{truck.dateAcquired || 'N/A'}</td>
+              </tr>
+            </tbody>
+          </Table>
         </Card.Body>
       </Card>
     </div>
